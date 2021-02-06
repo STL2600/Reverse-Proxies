@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+    traefikProxy:
+        container_name: traefik-proxy
+        image: traefik:2.4
+        restart: unless-stopped
+        ports:
+            - 80:80
+            - 8080:8080
+        volumes:
+            - ./traefik.yml:/etc/traefik/traefik.yml
+            - /var/run/docker.sock:/var/run/docker.sock
+
+    #nginxProxy:
+        #container_name: nginx-proxy
+        #image: nginx:alpine
+        #restart: unless-stopped
+        #ports:
+            #- 80:80
+        #volumes:
+            #- ./proxy-nginx.conf:/etc/nginx/conf.d/default.conf
+
+    staticOne:
+        container_name: test-one
+        image: nginx:alpine
+        restart: unless-stopped
+        volumes:
+            - ./static-one.html:/srv/index.html
+            - ./static-nginx.conf:/etc/nginx/conf.d/default.conf
+        labels:
+            - traefik.http.routers.test-one.rule=Host(`test-one.local.rtward.com`)
+
+    staticTwo:
+        container_name: test-two
+        image: nginx:alpine
+        restart: unless-stopped
+        volumes:
+            - ./static-two.html:/srv/index.html
+            - ./static-nginx.conf:/etc/nginx/conf.d/default.conf
+        labels:
+            - traefik.http.routers.test-two.rule=Host(`test-two.local.rtward.com`)

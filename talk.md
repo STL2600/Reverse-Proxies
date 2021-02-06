@@ -1,3 +1,7 @@
+% STL2600 + DC314
+% Reverse Proxies
+% Febuary 5, 2021
+
 # NGINX
 
  - An all purpose web server, but works well as a reverse proxy
